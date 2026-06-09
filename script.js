@@ -1,3 +1,7 @@
+const CSV_URL =
+"https://docs.google.com/spreadsheets/d/1ny8Q9YqCXcHrz8SnSsC6LZTYTF64BVlWhx7VmJhGplk/export?format=csv&gid=0";
+
+let questions = [];
 let currentQuestion = 0;
 let score = 0;
 const questions = [
@@ -55,6 +59,11 @@ answers: [
 ];
 
 function startTest(){
+
+if(questions.length === 0){
+  alert("Savollar hali yuklanmadi. Bir necha soniya kuting.");
+  return;
+}
 
 let fullname =
 document.getElementById("fullname").value;
@@ -123,10 +132,9 @@ alert("Javobni tanlang!");
 return;
 }
 
-if(selected.value === "0"){
+if(Number(selected.value) === questions[currentQuestion].correct){
 score++;
 }
-
 currentQuestion++;
 
 if(currentQuestion < questions.length){
@@ -165,3 +173,40 @@ async function testGoogleSheets() {
 }
 
 testGoogleSheets();
+async function loadQuestions() {
+
+  const response = await fetch(CSV_URL);
+  const csvText = await response.text();
+
+  const rows = csvText.trim().split("\n");
+
+  questions = [];
+
+  for(let i = 1; i < rows.length; i++){
+
+    const cols = rows[i].split(",");
+
+    if(cols.length >= 6){
+
+      questions.push({
+        question: cols[1],
+        answers: [
+          cols[2],
+          cols[3],
+          cols[4],
+          cols[5]
+        ],
+        correct: 0
+      });
+
+    }
+  }
+
+  questions.sort(() => Math.random() - 0.5);
+
+  questions = questions.slice(0,50);
+
+  console.log("Tanlangan savollar:", questions.length);
+}
+
+loadQuestions();
