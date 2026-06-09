@@ -1,3 +1,5 @@
+const SAVE_URL =
+"https://script.google.com/macros/s/AKfycbwdf-qj9JNe_u6nm22GLPq9qDKNYxjXPpwemyX_IeyAdSh5kjmT40dsOAnREESzHuveww/exec";
 const CSV_URL =
 "https://docs.google.com/spreadsheets/d/1ny8Q9YqCXcHrz8SnSsC6LZTYTF64BVlWhx7VmJhGplk/export?format=csv&gid=0";
 
@@ -17,6 +19,8 @@ document.getElementById("fullname").value;
 
 let group =
 document.getElementById("group").value;
+window.studentName = fullname;
+window.studentGroup = group;
 
 if(fullname === "" || group === ""){
 alert("Ism familiya va guruhni kiriting!");
@@ -102,7 +106,7 @@ document.querySelector(".container").innerHTML = `
 
 <p>Natija: ${percent}%</p>
 `;
-
+saveResult(score, percent);
 }
 
 }
@@ -157,3 +161,16 @@ async function loadQuestions() {
 }
 
 loadQuestions();
+async function saveResult(ball, foiz){
+
+  await fetch(SAVE_URL,{
+    method:"POST",
+    body:JSON.stringify({
+      ism: window.studentName,
+      guruh: window.studentGroup,
+      ball: ball,
+      foiz: foiz
+    })
+  });
+
+}
