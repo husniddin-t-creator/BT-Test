@@ -67,12 +67,16 @@ alert("Ism familiya va guruhni kiriting!");
 return;
 }
 
+if(questions.length === 0){
+alert("Savollar yuklanmadi!");
+return;
+}
+
 currentQuestion = 0;
 score = 0;
 
 showQuestion();
 }
-
 function showQuestion(){
 
 const q = questions[currentQuestion];
@@ -147,3 +151,17 @@ document.querySelector(".container").innerHTML = `
 }
 
 }
+async function testGoogleSheets() {
+
+  const url =
+  "https://docs.google.com/spreadsheets/d/1ny8Q9YqCXcHrz8SnSsC6LZTYTF64BVlWhx7VmJhGplk/export?format=csv&gid=0";
+
+  const response = await fetch(url);
+
+  const text = await response.text();
+
+  console.log(text.substring(0,500));
+
+}
+
+testGoogleSheets();
