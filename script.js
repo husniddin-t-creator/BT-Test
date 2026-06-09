@@ -159,13 +159,12 @@ function nextQuestion(){
 
 function finishTest(){
 
-clearInterval(timerInterval);
+  clearInterval(timerInterval);
 
-let percent =
-Math.round(score / questions.length * 100);
+  let percent =
+  Math.round(score / questions.length * 100);
 
-let html = `
-
+  document.querySelector(".container").innerHTML = `
   <h2>Test tugadi</h2>
 
   <p>To'g'ri javoblar: ${score}</p>
@@ -175,26 +174,9 @@ let html = `
   <p>Natija: ${percent}%</p>
   `;
 
-if(percent >= 90){
-
-```
-html += `
-<br><br>
-<button onclick="downloadCertificate()">
-🎓 Sertifikatni olish
-</button>
-`;
-```
+  saveResult(score, percent);
 
 }
-
-document.querySelector(".container").innerHTML =
-html;
-
-saveResult(score, percent);
-
-}
-
 function updateTimer(){
 
   let min =
