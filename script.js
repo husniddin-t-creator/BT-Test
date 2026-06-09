@@ -1,3 +1,4 @@
+let timeLeft = 30 * 60;
 const SAVE_URL =
 "https://script.google.com/macros/s/AKfycbwdf-qj9JNe_u6nm22GLPq9qDKNYxjXPpwemyX_IeyAdSh5kjmT40dsOAnREESzHuveww/exec";
 const CSV_URL =
@@ -38,7 +39,7 @@ score = 0;
 showQuestion();
 }
 function showQuestion(){
-
+<p id="timer"></p>
 const q = questions[currentQuestion];
 
 document.querySelector(".container").innerHTML = `
@@ -139,16 +140,22 @@ async function loadQuestions() {
 
     if(cols.length >= 6){
 
-      questions.push({
-        question: cols[1],
-        answers: [
-          cols[2],
-          cols[3],
-          cols[4],
-          cols[5]
-        ],
-        correct: 0
-      });
+      let answers = [
+  cols[2],
+  cols[3],
+  cols[4],
+  cols[5]
+];
+
+let correctAnswer = cols[2];
+
+answers.sort(() => Math.random() - 0.5);
+
+questions.push({
+  question: cols[1],
+  answers: answers,
+  correct: answers.indexOf(correctAnswer)
+});
 
     }
   }
@@ -174,3 +181,32 @@ async function saveResult(ball, foiz){
   });
 
 }
+setInterval(() => {
+
+  let min =
+  Math.floor(timeLeft / 60);
+
+  let sec =
+  timeLeft % 60;
+
+  let timer =
+  document.getElementById("timer");
+
+  if(timer){
+    timer.innerHTML =
+      "⏰ Vaqt: " +
+      min + ":" +
+      String(sec).padStart(2,"0");
+  }
+
+  timeLeft--;
+
+  if(timeLeft < 0){
+
+    alert("Vaqt tugadi!");
+
+    location.reload();
+
+  }
+
+},1000);
