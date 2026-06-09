@@ -159,25 +159,30 @@ function nextQuestion(){
 
 function finishTest(){
 
-  clearInterval(timerInterval);
+clearInterval(timerInterval);
 
-  let percent =
-  Math.round(score / questions.length * 100);
+let percent =
+Math.round(score / questions.length * 100);
 
-  document.querySelector(".container").innerHTML = `
-  <h2>Test tugadi</h2>
+let html = `
 
-  <p>To'g'ri javoblar: ${score}</p>
+if(percent >= 90){
 
-  <p>Jami savollar: ${questions.length}</p>
-
-  <p>Natija: ${percent}%</p>
-  `;
-
-  saveResult(score, percent);
+html += `
+<br><br>
+<button onclick="downloadCertificate()">
+🎓 Sertifikatni olish
+</button>
+`;
 
 }
 
+document.querySelector(".container").innerHTML =
+html;
+
+saveResult(score, percent);
+
+}
 function updateTimer(){
 
   let min =
@@ -227,5 +232,23 @@ async function saveResult(ball, foiz){
     console.log(error);
 
   }
+
+}
+function downloadCertificate(){
+
+localStorage.setItem(
+"studentName",
+window.studentName
+);
+
+localStorage.setItem(
+"studentPercent",
+Math.round(score / questions.length * 100)
+);
+
+window.open(
+"certificate.html",
+"_blank"
+);
 
 }
