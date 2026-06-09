@@ -260,4 +260,3 @@ window.open(
 );
 
 }
-alert("Script ishladi");
